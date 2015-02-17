@@ -1,0 +1,14 @@
+<!--
+The text contained within is a remix or transformation of the work done by Cards Against Humanity LLC.
+
+Cards Against Humanity is distributed under a Creative Commons BY-NC-SA 2.0 license.
+That means you can use and remix the game for free, but you can't sell it without our permission.
+“Cards Against Humanity” and the CAH logos are trademarks of Cards Against Humanity LLC.
+-->
+<cards>
+    <card>
+        <enabled>true</enabled>
+        <pick>1</pick>
+        <value>I got 99 problems but _ ain't one.</value>
+    </card>
+</cards>
