@@ -24,14 +24,19 @@ package net.visualillusionsent.crafters.against.blocks.cards;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BlackCard extends Card {
-    private final int pick;
+    private final int pick, draw;
 
-    public BlackCard(String pack, String text, int pick) {
+    public BlackCard(String pack, String text, int pick, int draw) {
         super(pack, text);
         this.pick = pick;
+        this.draw = draw;
     }
 
-    public final int getPick() {
+    public int getPick() {
         return pick;
+    }
+
+    public int getDraw() {
+        return draw;
     }
 }

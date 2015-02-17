@@ -8,7 +8,333 @@ That means you can use and remix the game for free, but you can't sell it withou
 <cards>
     <card>
         <enabled>true</enabled>
-        <pick>1</pick>
+        <value>How did I lose my virginity?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Why can't I sleep at night?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's that smell?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
         <value>I got 99 problems but _ ain't one.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Maybe she's born with it. Maybe it's _</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's the next Happy Meal® Toy?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Here is the church Here is the steeple Open the doors And there is _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>It's a pity that kids these days are getting involved with _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Today on Maury: "Help! My son is _!</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Alternative medicine is now embracing the curative powers of _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>And the Academy Award for _ goes to _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's that sound?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What ended my last releationship?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>MTV's new reality show features eight washed-up celebrities living with _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>I drink to forget _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>I'm sorry, Professor, but I couldn't complete my homework because of _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What is Batman's guilty pleasure?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>This is the way the world ends \ This is the way the world ends \ Not with a bang but with _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's a girl's best friend?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>TSA guidelines now prohibit _ on airplanes.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_. That's how I want to die.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>For my next trick, I will pull _ out of _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>In the new Disney Channel Original Movie, Hannah Montana struggles with _ for the first time.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_ is a slippery slope that leads to _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>I get by with a little help from _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Dear Abby, I'm having some trouble with _ and would like your advice.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Instead of coal, Santa now gives the bad children _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's the most emo?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>In 1,000 years, when paper money is a distant memory, how will we pay for goods and services?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Introducing the amazing superhero/sidekick duo! It's _ and _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>In M. Night Shyamalan's new movie, Bruce Willis discovers that _ had really been _ all along.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>A romantic, candlelit dinner would be incomplete without _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_. Betcha can't have just one!</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>White people like _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_. High five, bro.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Next from J.K. Rowling: Harry Potter and the Chamber of _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What are my parents hiding from me?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What will always get you laid?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>in L.A. County Jail, word is you can trade 200 cigarettes for _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What did I bring back from Mexico?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What don't you want to find in your Kung Pao chicken?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What will I bring back in time to convince people that I am a powerful wizard?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+
+        <value>How am I maintaining my relationship status?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_. It's a trap!</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Coming to Broadway this season, _: The Musical.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>While the United States raced the Soviet Union to the moon, the Mexican government funneled millions of pesos into research on _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>After the earthquake, Sean Penn brought _ to the people of Haiti.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Next on ESPN2, the World Series of _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Step 1: _. Step 2: _. Step 3: Profit.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>They said we were crazy. They said we couldn't put _ inside of _. They were wrong.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>But before I kill you, Mr. Bond, I must show you _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What gives me uncontrollable gas?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>The new Chevy Tahoe. With the power and space to take _ everywhere you go.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>The class field trip was completely ruined by _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>When Pharaoh remained unmoved, Moses called down a Plague of _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's my secret power?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's there a ton of in heaven?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What would grandma find disturbing, yet oddly charming?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>I never truly understood _ until I encountered _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What did hte U.S. airdrop to the children of Afghanistan?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What helps Obama unwind?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What did Vin Diesel eat for dinner?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_: good to the last drop.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Why am I sticky?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What gets better with age?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_: kid-tested, methoer-approved.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Daddy, why is mommy crying?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's Teach for America using to inspire inner city students to succeed?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>A recent laboratory study shows that undergraduates have 50% less sex after being exposed to _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Life for American Indians was forever changed when the White Man introduced them to _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>I do not know with what weapons World World III will be fought, but World War IV will be fought with _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Why do I hurt all over?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What am I giving up for Lent?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's George W. Bush thinking about right now?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>The Smithsonian Museum of Natural History has just opened an interactive exhibit on _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>When I am President of the United States, I will create the Department of _.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Lifetime® presents "_, the Story of _."</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What never fails to liven up the party?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>What's the new fad diet?</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>Fun tip! When your man asks you to go down on him, try surprising him with _ instead.</value>
+    </card>
+    <card>
+        <enabled>true</enabled>
+        <value>_ + _ = _.</value>
+        <draw>2</draw>
+    </card>
+    <card>
+        <enabled>false</enabled>
+        <value>Make a haiku</value>
+        <draw>2</draw>
     </card>
 </cards>

@@ -146,22 +146,15 @@ public class CraftersAgainstBlocks {
                     }
                     CraftersAgainstBlocks.loadWhiteCard(new WhiteCard(cardsets.getName(), text));
                 }
+
                 Document black = fileBuilder.build(blackCards);
-                for (Element card : white.getRootElement().getChildren()) {
-                    if (card.getChild("enabled") == null || card.getChild("value") == null || card.getChild("pick") == null) {
-                        // Warn faulty card
+                for (Element card : black.getRootElement().getChildren()) {
+                    if (card.getChild("enabled") == null || card.getChild("value") == null) {
+                        modReference.getPluginLogger().log(Level.WARNING, "A black card in the \"" + cardsets.getName() + "\" Card Set is corrupted (invalid/missing value or enabled fields), skipping loading...");
                         continue;
                     }
                     if (!BooleanUtils.parseBoolean(card.getChild("enabled").getValue())) {
                         // Card disabled
-                        continue;
-                    }
-                    int pick;
-                    try {
-                        pick = Integer.parseInt(card.getChildText("pick"));
-                    }
-                    catch (NumberFormatException nfex) {
-                        modReference.getPluginLogger().log(Level.WARNING, "A black card in the \"" + cardsets.getName() + "\" Card Set is corrupted (invalid pick count), skipping loading...");
                         continue;
                     }
                     String text = card.getChildText("value");
@@ -169,7 +162,18 @@ public class CraftersAgainstBlocks {
                         modReference.getPluginLogger().log(Level.WARNING, "A black card in the \"" + cardsets.getName() + "\" Card Set is corrupted (invalid/missing value text), skipping loading...");
                         continue;
                     }
-                    CraftersAgainstBlocks.loadBlackCard(new BlackCard(cardsets.getName(), card.getChildText("value"), pick));
+                    int pick = Math.max(1, text.length() - text.replace("_", "").length());
+                    int draw = 0;
+                    if (card.getChild("draw") != null) {
+                        try {
+                            draw = Integer.parseInt(card.getChildText("draw"));
+                        }
+                        catch (NumberFormatException nfex) {
+                            modReference.getPluginLogger().log(Level.WARNING, "A black card in the \"" + cardsets.getName() + "\" Card Set is corrupted (invalid/missing draw amount), skipping loading...");
+                            continue;
+                        }
+                    }
+                    CraftersAgainstBlocks.loadBlackCard(new BlackCard(cardsets.getName(), card.getChildText("value"), pick, draw));
                 }
             }
             catch (JDOMException e) {
