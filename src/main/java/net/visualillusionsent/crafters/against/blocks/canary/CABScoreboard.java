@@ -25,6 +25,7 @@ import net.canarymod.api.scoreboard.ScoreObjective;
 import net.canarymod.api.scoreboard.ScorePosition;
 import net.canarymod.api.scoreboard.Scoreboard;
 import net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks;
+import net.visualillusionsent.minecraft.plugin.canary.CanaryMessageReceiver;
 
 import java.util.ArrayList;
 
@@ -50,13 +51,13 @@ public final class CABScoreboard {
     public void addUser(Player player) {
         scoreboard.getScore(player, objective).setScore(0);
         objective.setScoreboardPosition(ScorePosition.SIDEBAR, player);
-        CraftersAgainstBlocks.addUser(player.getUUID());
+        CraftersAgainstBlocks.addUser(new CanaryMessageReceiver(player));
     }
 
     public void removeUser(Player player) {
         scoreboard.removeScore(player.getName(), objective);
         scoreboard.clearScoreboardPosition(ScorePosition.SIDEBAR, player);
-        CraftersAgainstBlocks.removeUser(player.getUUID());
+        CraftersAgainstBlocks.removeUser(new CanaryMessageReceiver(player));
     }
 
     public void awardPointTo(Player player) {

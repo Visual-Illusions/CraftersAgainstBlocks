@@ -24,7 +24,13 @@ import net.canarymod.hook.HookHandler;
 import net.canarymod.hook.player.DisconnectionHook;
 import net.canarymod.plugin.PluginListener;
 import net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks;
+import net.visualillusionsent.minecraft.plugin.ModMessageReceiver;
+import net.visualillusionsent.minecraft.plugin.canary.CanaryMessageReceiver;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
+
+import static net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks.addUser;
+import static net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks.isPlaying;
+import static net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks.removeUser;
 
 /**
  * Copyright (C) 2015 Visual Illusions Entertainment
@@ -40,8 +46,9 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
 
     @HookHandler
     public void userLeave(DisconnectionHook hook) {
-        if (CraftersAgainstBlocks.isPlaying(hook.getPlayer().getUUID())) {
-            CraftersAgainstBlocks.removeUser(hook.getPlayer().getUUID());
+        ModMessageReceiver receiver = new CanaryMessageReceiver(hook.getPlayer());
+        if (isPlaying(receiver)) {
+            removeUser(receiver);
         }
     }
 
@@ -59,26 +66,58 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
     @Command(
             aliases = { "join" },
             parent = "cab",
-            permissions = "cab.join",
+            permissions = "cab.play",
             description = "Join a game of Crafters Against Blocks",
             toolTip = "/cab join"
     )
     public void joinGame(MessageReceiver receiver, String[] args) {
         if (receiver.getReceiverType().equals(ReceiverType.PLAYER)) {
-            getPlugin().scoreBoard.addUser(receiver.asPlayer());
+            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver.asPlayer());
+            if (!isPlaying(mrec)) {
+                getPlugin().scoreBoard.addUser(receiver.asPlayer());
+                addUser(mrec);
+                receiver.notice("You have joined a game of Crafters Against Blocks.");
+            }
+            else {
+                receiver.notice("You are already playing.");
+            }
+        }
+        else {
+            receiver.notice("You have to be a player to play Crafters Against Blocks.");
         }
     }
 
     @Command(
             aliases = { "part", "leave" },
             parent = "cab",
-            permissions = "cab.part",
+            permissions = "cab.play",
             description = "Departs a game of Crafters Against Blocks",
             toolTip = "/cab part"
     )
     public void partGame(MessageReceiver receiver, String[] args) {
         if (receiver.getReceiverType().equals(ReceiverType.PLAYER)) {
-            getPlugin().scoreBoard.removeUser(receiver.asPlayer());
+            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver.asPlayer());
+            if (isPlaying(mrec)) {
+                getPlugin().scoreBoard.removeUser(receiver.asPlayer());
+                removeUser(mrec);
+                receiver.notice("You have left a game of Crafters Against Blocks.");
+            }
+        }
+    }
+
+    @Command(
+            aliases = { "showhand" },
+            parent = "cab",
+            permissions = "cab.play",
+            description = "Departs a game of Crafters Against Blocks",
+            toolTip = "/cab part"
+    )
+    public void showHand(MessageReceiver receiver, String[] args) {
+        if (receiver.getReceiverType().equals(ReceiverType.PLAYER)) {
+            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver.asPlayer());
+            if (isPlaying(mrec)) {
+                CraftersAgainstBlocks.getUser(mrec).showHand();
+            }
         }
     }
 

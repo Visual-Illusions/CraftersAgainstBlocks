@@ -17,7 +17,11 @@
  */
 package net.visualillusionsent.crafters.against.blocks.user;
 
+import net.visualillusionsent.crafters.against.blocks.cards.Hand;
 import net.visualillusionsent.crafters.against.blocks.cards.WhiteCard;
+import net.visualillusionsent.minecraft.plugin.VisualIllusionsPlugin;
+
+import java.util.Random;
 
 /**
  * Copyright (C) 2015 Visual Illusions Entertainment
@@ -25,15 +29,35 @@ import net.visualillusionsent.crafters.against.blocks.cards.WhiteCard;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public interface User {
+public final class RandoCardrissian implements User {
+    private final Random rng = new Random();
+    private final Hand hand = new Hand();
 
-    public WhiteCard playCard(int position);
+    public RandoCardrissian(VisualIllusionsPlugin visualIllusionsPlugin) {
+    }
 
-    public void replenishHand();
+    @Override
+    public final WhiteCard playCard(int position) {
+        return hand.removeCard(rng.nextInt(10));
+    }
 
-    public void giveCard(WhiteCard card);
+    public final void replenishHand() {
+        hand.replenish();
+    }
 
-    public void inform(String msg);
+    public final void giveCard(WhiteCard card) {
+        hand.addCard(card);
+    }
 
-    public void showHand();
+    public void inform(String msg) {
+        // N/A
+    }
+
+    public void showHand() {
+        // N/A
+    }
+
+    public final boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }

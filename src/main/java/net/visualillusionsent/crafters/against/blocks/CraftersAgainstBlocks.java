@@ -17,13 +17,14 @@
  */
 package net.visualillusionsent.crafters.against.blocks;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
 import net.visualillusionsent.crafters.against.blocks.cards.BlackCard;
 import net.visualillusionsent.crafters.against.blocks.cards.BlackCardDeck;
 import net.visualillusionsent.crafters.against.blocks.cards.WhiteCard;
 import net.visualillusionsent.crafters.against.blocks.cards.WhiteCardDeck;
-import net.visualillusionsent.crafters.against.blocks.user.User;
+import net.visualillusionsent.crafters.against.blocks.user.HumanUser;
+import net.visualillusionsent.crafters.against.blocks.user.RandoCardrissian;
+import net.visualillusionsent.minecraft.plugin.ModMessageReceiver;
 import net.visualillusionsent.minecraft.plugin.VisualIllusionsPlugin;
 import net.visualillusionsent.utils.BooleanUtils;
 import net.visualillusionsent.utils.FileUtils;
@@ -36,7 +37,7 @@ import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -49,13 +50,15 @@ public class CraftersAgainstBlocks {
     private static VisualIllusionsPlugin modReference;
     private static final BlackCardDeck bcd = new BlackCardDeck();
     private static final WhiteCardDeck wcd = new WhiteCardDeck();
-    private static final BiMap<UUID, User> players = HashBiMap.create();
+    private static final Map<ModMessageReceiver, HumanUser> players = Maps.newHashMap();
     // private static final XMLOutputter xmlSerializer = new XMLOutputter(Format.getPrettyFormat().setExpandEmptyElements(false).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator("\n"));
     private static SAXBuilder fileBuilder = new SAXBuilder();
+    private static RandoCardrissian rando;
 
     public static void setModReference(VisualIllusionsPlugin visualIllusionsPlugin) {
         if (modReference == null) {
             modReference = visualIllusionsPlugin;
+            rando = new RandoCardrissian(visualIllusionsPlugin);
         }
     }
 
@@ -77,20 +80,24 @@ public class CraftersAgainstBlocks {
         return bcd.dealCard();
     }
 
-    public static boolean isPlaying(UUID uuid) {
-        return players.containsKey(uuid);
+    public static boolean isPlaying(ModMessageReceiver receiver) {
+        return players.containsKey(receiver);
     }
 
-    public static void removeUser(UUID uuid) {
-        players.remove(uuid);
+    public static void removeUser(ModMessageReceiver receiver) {
+        players.remove(receiver);
     }
 
-    public static void addUser(UUID uuid) {
-        players.put(uuid, new User(uuid));
+    public static void addUser(ModMessageReceiver receiver) {
+        players.put(receiver, new HumanUser(receiver));
     }
 
-    public static User getUser(UUID uuid) {
-        return players.get(uuid);
+    public static HumanUser getUser(ModMessageReceiver receiver) {
+        return players.get(receiver);
+    }
+
+    public static RandoCardrissian getRandoCardrissian() {
+        return rando;
     }
 
     public static boolean loadCards(String setDirectory) {
@@ -185,6 +192,32 @@ public class CraftersAgainstBlocks {
                 return false;
             }
         }
+
+        bcd.shuffle();
+        wcd.shuffle();
         return true;
+    }
+
+    public static void allPlayersDraw(HumanUser cardCzar, int draw) {
+        for (HumanUser humanUser : players.values()) {
+            if (humanUser.equals(cardCzar)) {
+                continue;
+            }
+            for (int count = 0; count < draw; count++) {
+                humanUser.giveCard(wcd.dealCard());
+            }
+        }
+    }
+
+    public static void informPlayers(BlackCard inplay) {
+        for (HumanUser humanUser : players.values()) {
+            humanUser.inform("[CAB] " + inplay.toString());
+        }
+    }
+
+    public static void informPlayers(String message) {
+        for (HumanUser humanUser : players.values()) {
+            humanUser.inform("[CAB] " + message);
+        }
     }
 }

@@ -17,6 +17,8 @@
  */
 package net.visualillusionsent.crafters.against.blocks.cards;
 
+import net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks;
+import net.visualillusionsent.crafters.against.blocks.user.HumanUser;
 import net.visualillusionsent.utils.Verify;
 
 import java.util.Arrays;
@@ -88,5 +90,20 @@ public final class Hand {
 
     public String toString() {
         return Arrays.toString(hand.toArray(new Card[10]));
+    }
+
+    public void replenish() {
+        /*
+        Brings the hand count back up to 10 cards
+        */
+        while (hand.size() < 10) {
+            addCard(CraftersAgainstBlocks.dealWhiteCard());
+        }
+    }
+
+    public void show(HumanUser humanUser) {
+        for (int position = 0; position < hand.size(); position++) {
+            humanUser.inform(String.format("#%d: %s", position + 1, hand.get(position)));
+        }
     }
 }
