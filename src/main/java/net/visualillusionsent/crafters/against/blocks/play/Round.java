@@ -46,7 +46,7 @@ import static net.visualillusionsent.crafters.against.blocks.play.Table.packingH
  * @author Jason Jones (darkdiplomat)
  */
 public final class Round {
-    private HumanUser cardCzar;
+    HumanUser cardCzar;
     private BlackCard inplay;
     private List<HumanUser> players;
     private BiMap<User, WhiteCard[]> played = HashBiMap.create();
@@ -61,7 +61,6 @@ public final class Round {
     public Round(List<HumanUser> players, HumanUser cardCzar) {
         this.players = players;
         this.cardCzar = cardCzar;
-        players.remove(cardCzar);
         beginRound();
     }
 
@@ -101,6 +100,7 @@ public final class Round {
         if (state == State.STARTED) {
             played.put(user, cards);
 
+            System.out.println(played.size() + " " + players.size());
             if (played.size() == (players.size() + isRandoPlaying())) {
                 showCards();
             }
@@ -120,15 +120,16 @@ public final class Round {
     }
 
     private void showCards() {
-        for (HumanUser humanUser : players) {
+
+        for (WhiteCard[] cards : played.values()) {
             int count = 1;
-            for (WhiteCard[] cards : played.values()) {
-                String text = "";
-                for (WhiteCard card : cards) {
-                    text += "\"" + card.getText() + "\" ";
-                }
-                humanUser.inform(String.format("#%d: %s", count, text));
-                count++;
+            String text = "";
+            for (WhiteCard card : cards) {
+                text += "\"" + card.getText() + "\" ";
+            }
+            cardCzar.inform(String.format("#%d: %s", count, text));
+            for (HumanUser humanUser : players) {
+                humanUser.inform(String.format("#%d: %s", count++, text));
             }
         }
         state = State.CZARSELECTION;

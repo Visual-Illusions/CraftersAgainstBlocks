@@ -43,7 +43,7 @@ public final class RandoCardrissian implements User {
 
     @Override
     public final WhiteCard playCard(int position) {
-        return hand.removeCard(rng.nextInt(10));
+        return hand.removeCard(rng.nextInt(9));
     }
 
     public final void replenishHand() {
