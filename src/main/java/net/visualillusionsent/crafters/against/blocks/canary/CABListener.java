@@ -22,12 +22,14 @@
  */
 package net.visualillusionsent.crafters.against.blocks.canary;
 
+import com.google.common.collect.HashMultimap;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.Command;
 import net.canarymod.hook.HookHandler;
 import net.canarymod.hook.player.DisconnectionHook;
 import net.canarymod.plugin.PluginListener;
+import net.visualillusionsent.crafters.against.blocks.cards.WhiteCard;
 import net.visualillusionsent.crafters.against.blocks.play.Round;
 import net.visualillusionsent.crafters.against.blocks.play.Table;
 import net.visualillusionsent.crafters.against.blocks.user.HumanUser;
@@ -50,6 +52,8 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
     public CABListener(CanaryAgainstBlocks plugin) {
         super(plugin);
     }
+
+    private HashMultimap<MessageReceiver, Integer> pendingSelection = HashMultimap.create();
 
     @HookHandler
     public void userLeave(DisconnectionHook hook) {
@@ -175,8 +179,25 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
                     return;
                 }
 
-                if (round.getSelectionCount() > 1) {
-                    // UNKNOWN HANDLING
+                int count = round.getSelectionCount();
+                if (count > 1) {
+                    if (!pendingSelection.containsKey(receiver) || pendingSelection.get(receiver).size() < count) {
+                        if (pendingSelection.get(receiver).contains(selection)) {
+                            receiver.notice("You have already selected that card, Please make another selection.");
+                            return;
+                        }
+                        pendingSelection.put(receiver, selection);
+                        receiver.notice("Please make another selection.");
+                    }
+                    else {
+                        WhiteCard[] cards = new WhiteCard[count];
+                        Integer[] selections = pendingSelection.get(receiver).toArray(new Integer[count]);
+                        for (int index = 0; index < count; index++) {
+                            cards[index] = user.playCard(selections[index]);
+                        }
+                        round.addPlay(user, cards);
+                        pendingSelection.removeAll(receiver);
+                    }
                 }
                 else {
                     round.addPlay(user, user.playCard(--selection));
