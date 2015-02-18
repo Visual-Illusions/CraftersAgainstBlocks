@@ -14,10 +14,15 @@
  *
  * You should have received a copy of the GNU General Public License v3 along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
+ *
+ *
+ * Cards Against Humanity is distributed under a Creative Commons BY-NC-SA 2.0 license.
+ * That means you can use and remix the game for free, but you can't sell it without our permission.
+ * “Cards Against Humanity” and the CAH logos are trademarks of Cards Against Humanity LLC.
  */
 package net.visualillusionsent.crafters.against.blocks.cards;
 
-import net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks;
+import net.visualillusionsent.crafters.against.blocks.play.Table;
 import net.visualillusionsent.crafters.against.blocks.user.HumanUser;
 import net.visualillusionsent.utils.Verify;
 
@@ -97,7 +102,7 @@ public final class Hand {
         Brings the hand count back up to 10 cards
         */
         while (hand.size() < 10) {
-            addCard(CraftersAgainstBlocks.dealWhiteCard());
+            addCard(Table.dealWhiteCard());
         }
     }
 

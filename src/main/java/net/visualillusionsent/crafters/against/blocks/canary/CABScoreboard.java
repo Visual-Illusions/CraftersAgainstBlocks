@@ -14,6 +14,11 @@
  *
  * You should have received a copy of the GNU General Public License v3 along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
+ *
+ *
+ * Cards Against Humanity is distributed under a Creative Commons BY-NC-SA 2.0 license.
+ * That means you can use and remix the game for free, but you can't sell it without our permission.
+ * “Cards Against Humanity” and the CAH logos are trademarks of Cards Against Humanity LLC.
  */
 package net.visualillusionsent.crafters.against.blocks.canary;
 
@@ -24,7 +29,7 @@ import net.canarymod.api.scoreboard.Score;
 import net.canarymod.api.scoreboard.ScoreObjective;
 import net.canarymod.api.scoreboard.ScorePosition;
 import net.canarymod.api.scoreboard.Scoreboard;
-import net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks;
+import net.visualillusionsent.crafters.against.blocks.play.Table;
 import net.visualillusionsent.minecraft.plugin.canary.CanaryMessageReceiver;
 
 import java.util.ArrayList;
@@ -51,13 +56,13 @@ public final class CABScoreboard {
     public void addUser(Player player) {
         scoreboard.getScore(player, objective).setScore(0);
         objective.setScoreboardPosition(ScorePosition.SIDEBAR, player);
-        CraftersAgainstBlocks.addUser(new CanaryMessageReceiver(player));
+        Table.addUser(new CanaryMessageReceiver(player));
     }
 
     public void removeUser(Player player) {
         scoreboard.removeScore(player.getName(), objective);
         scoreboard.clearScoreboardPosition(ScorePosition.SIDEBAR, player);
-        CraftersAgainstBlocks.removeUser(new CanaryMessageReceiver(player));
+        Table.removeUser(new CanaryMessageReceiver(player));
     }
 
     public void awardPointTo(Player player) {

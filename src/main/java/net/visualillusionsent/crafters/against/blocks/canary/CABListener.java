@@ -14,6 +14,11 @@
  *
  * You should have received a copy of the GNU General Public License v3 along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
+ *
+ *
+ * Cards Against Humanity is distributed under a Creative Commons BY-NC-SA 2.0 license.
+ * That means you can use and remix the game for free, but you can't sell it without our permission.
+ * “Cards Against Humanity” and the CAH logos are trademarks of Cards Against Humanity LLC.
  */
 package net.visualillusionsent.crafters.against.blocks.canary;
 
@@ -23,14 +28,16 @@ import net.canarymod.commandsys.Command;
 import net.canarymod.hook.HookHandler;
 import net.canarymod.hook.player.DisconnectionHook;
 import net.canarymod.plugin.PluginListener;
-import net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks;
+import net.visualillusionsent.crafters.against.blocks.play.Round;
+import net.visualillusionsent.crafters.against.blocks.play.Table;
+import net.visualillusionsent.crafters.against.blocks.user.HumanUser;
 import net.visualillusionsent.minecraft.plugin.ModMessageReceiver;
 import net.visualillusionsent.minecraft.plugin.canary.CanaryMessageReceiver;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
 
-import static net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks.addUser;
-import static net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks.isPlaying;
-import static net.visualillusionsent.crafters.against.blocks.CraftersAgainstBlocks.removeUser;
+import static net.visualillusionsent.crafters.against.blocks.play.Table.addUser;
+import static net.visualillusionsent.crafters.against.blocks.play.Table.isPlaying;
+import static net.visualillusionsent.crafters.against.blocks.play.Table.removeUser;
 
 /**
  * Copyright (C) 2015 Visual Illusions Entertainment
@@ -77,6 +84,7 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
                 getPlugin().scoreBoard.addUser(receiver.asPlayer());
                 addUser(mrec);
                 receiver.notice("You have joined a game of Crafters Against Blocks.");
+                Table.startRound();
             }
             else {
                 receiver.notice("You are already playing.");
@@ -116,9 +124,78 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
         if (receiver.getReceiverType().equals(ReceiverType.PLAYER)) {
             ModMessageReceiver mrec = new CanaryMessageReceiver(receiver.asPlayer());
             if (isPlaying(mrec)) {
-                CraftersAgainstBlocks.getUser(mrec).showHand();
+                Table.getUser(mrec).showHand();
             }
         }
+    }
+
+    @Command(
+            aliases = { "select" },
+            parent = "cab",
+            permissions = "cab.play",
+            description = "Makes White Card selection(s)",
+            toolTip = "/cab select <card#>"
+    )
+    public void select(MessageReceiver receiver, String[] args) {
+        if (receiver.getReceiverType().equals(ReceiverType.PLAYER)) {
+            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver.asPlayer());
+            if (isPlaying(mrec)) {
+                HumanUser user = Table.getUser(mrec);
+                Round round = Table.getRoundInProgress();
+                if (!round.isInRound(user)) {
+                    receiver.notice("You are only spectating this round.");
+                    return;
+                }
+                else if (round.isCzar(user)) {
+                    if (!handleCzarSelection(round, user, args[0])) {
+                        receiver.notice("You are the Card Czar, and other players are still selecting their cards.");
+                    }
+                    return;
+                }
+                else if (round.hasMadePlay(user)) {
+                    receiver.notice("You have already made your selection.");
+                    return;
+                }
+
+                int selection;
+                try {
+                    selection = Integer.parseInt(args[0]);
+                    if (selection > 10 || selection < 1) {
+                        throw new NumberFormatException();
+                    }
+                    selection--; //Adjust index
+                }
+                catch (NumberFormatException nfex) {
+                    receiver.notice("Invalid selection. Please enter a whole number (1 - 10)");
+                    return;
+                }
+
+                if (round.getSelectionCount() > 1) {
+                    // UNKNOWN HANDLING
+                }
+                else {
+                    round.addPlay(user, user.playCard(selection));
+                }
+            }
+        }
+    }
+
+    private boolean handleCzarSelection(Round round, HumanUser user, String select) {
+        if (!round.canCzarSelect()) {
+            return false;
+        }
+
+        int selection;
+        try {
+            selection = Integer.parseInt(select);
+            selection--; //Adjust index
+
+            round.czarSelection(selection);
+        }
+        catch (NumberFormatException nfex) {
+            ((MessageReceiver)user.getReceiver().unwrap()).notice("Invalid selection");
+        }
+        return true;
     }
 
     @Command(
