@@ -84,7 +84,6 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
                 getPlugin().scoreBoard.addUser(receiver.asPlayer());
                 addUser(mrec);
                 receiver.notice("You have joined a game of Crafters Against Blocks.");
-                Table.startRound();
             }
             else {
                 receiver.notice("You are already playing.");
@@ -145,14 +144,18 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
             if (isPlaying(mrec)) {
                 HumanUser user = Table.getUser(mrec);
                 Round round = Table.getRoundInProgress();
-                if (!round.isInRound(user)) {
-                    receiver.notice("You are only spectating this round.");
+                if (round == null || !round.roundStarted()) {
+                    receiver.notice("The round hasn't started yet.");
                     return;
                 }
                 else if (round.isCzar(user)) {
                     if (!handleCzarSelection(round, user, args[0])) {
                         receiver.notice("You are the Card Czar, and other players are still selecting their cards.");
                     }
+                    return;
+                }
+                else if (!round.isInRound(user)) {
+                    receiver.notice("You are only spectating this round.");
                     return;
                 }
                 else if (round.hasMadePlay(user)) {

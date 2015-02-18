@@ -62,7 +62,17 @@ public class HumanUser implements User {
     }
 
     public boolean equals(Object obj) {
-        return !(!(obj instanceof HumanUser) && !(obj instanceof ModMessageReceiver)) && (receiver.equals(obj) || super.equals(obj));
+        if (!(obj instanceof HumanUser || obj instanceof ModMessageReceiver)) {
+            return false;
+        }
+        ModMessageReceiver mmr;
+        if (obj instanceof HumanUser) {
+            mmr = ((HumanUser)obj).getReceiver();
+        }
+        else {
+            mmr = (ModMessageReceiver)obj;
+        }
+        return receiver.equals(mmr);
     }
 
     public void showHand() {
