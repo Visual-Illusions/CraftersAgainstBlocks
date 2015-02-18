@@ -48,6 +48,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -157,6 +158,9 @@ public final class Table {
         if (inProgress != null && inProgress.roundStarted() && !inProgress.roundEnded()) {
             throw new IllegalStateException("Getting the Card Czar during a round is progress is outside manipulations.");
         }
+        if (czarindex > players.size()) {
+            czarindex = 0;
+        }
         return new ArrayList<HumanUser>(players.values()).get(czarindex++);
     }
 
@@ -170,7 +174,9 @@ public final class Table {
 
     public static void startRound() {
         if (players.size() > 2 && (inProgress == null || inProgress.roundEnded())) {
-            inProgress = new Round(Lists.newArrayList(players.values()), getCzar());
+            List<HumanUser> roundP = Lists.newArrayList(players.values());
+            roundP.addAll(players.values());
+            inProgress = new Round(roundP, getCzar());
         }
         else {
             informPlayers("Waiting on more players before round can begin");

@@ -169,7 +169,6 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
                     if (selection > 10 || selection < 1) {
                         throw new NumberFormatException();
                     }
-                    selection--; //Adjust index
                 }
                 catch (NumberFormatException nfex) {
                     receiver.notice("Invalid selection. Please enter a whole number (1 - 10)");
@@ -180,7 +179,7 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
                     // UNKNOWN HANDLING
                 }
                 else {
-                    round.addPlay(user, user.playCard(selection));
+                    round.addPlay(user, user.playCard(--selection));
                 }
             }
         }

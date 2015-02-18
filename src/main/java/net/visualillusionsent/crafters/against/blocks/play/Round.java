@@ -50,7 +50,7 @@ public final class Round {
     private BlackCard inplay;
     private List<HumanUser> players;
     private BiMap<User, WhiteCard[]> played = HashBiMap.create();
-    private State state = State.STARTED;
+    private State state = State.ENDED;
 
     private enum State {
         STARTED,
@@ -62,12 +62,16 @@ public final class Round {
         this.players = players;
         this.cardCzar = cardCzar;
         players.remove(cardCzar);
-        cardCzar.inform("You are the Card Czar this round");
         beginRound();
     }
 
     private void beginRound() {
+        state = State.STARTED;
         inplay = Table.dealBlackCard();
+
+        for (HumanUser user : players) {
+            user.replenishHand();
+        }
 
         if (packingHeat() && inplay.getDraw() == 2) {
             allPlayersDraw(cardCzar, 1);
@@ -80,15 +84,21 @@ public final class Round {
         informPlayers(inplay);
         informPlayers("Use /cab showhand to see the cards you have.");
         informPlayers("Use /cab select # to play white cards.");
+        cardCzar.inform("You are the Card Czar this round");
 
         RandoCardrissian rando = getRandoCardrissian();
         if (rando != null) {
-            addPlay(rando, rando.playCard(0));
+            rando.replenishHand();
+            List<WhiteCard> randoPlay = Lists.newArrayListWithCapacity(inplay.getPick());
+            for (int selection = 0; selection < inplay.getPick(); selection++) {
+                randoPlay.add(rando.playCard(0xCAFED00D));
+            }
+            addPlay(rando, randoPlay.toArray(new WhiteCard[inplay.getPick()]));
         }
     }
 
     public void addPlay(User user, WhiteCard... cards) {
-        if (state == State.STARTED && isInRound(user)) {
+        if (state == State.STARTED) {
             played.put(user, cards);
 
             if (played.size() == (players.size() + isRandoPlaying())) {
@@ -125,16 +135,17 @@ public final class Round {
     }
 
     public void czarSelection(int position) {
-        state = State.ENDED;
+
         LinkedList<WhiteCard[]> list = Lists.newLinkedList(played.values());
 
         if (position >= list.size()) {
             throw new NumberFormatException();
         }
 
+        state = State.ENDED;
         WhiteCard[] selection = list.get(position);
         for (WhiteCard win : selection) {
-            informPlayers(Table.CAB.concat(win.toString()));
+            informPlayers(win.getText());
         }
         User winner = played.inverse().get(selection);
         Table.awardPointTo(winner);

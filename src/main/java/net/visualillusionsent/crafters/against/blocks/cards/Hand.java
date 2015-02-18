@@ -72,7 +72,7 @@ public final class Hand {
             hand.removeElementAt(position);
             return toRet;
         }
-        return null;
+        throw new IllegalStateException("Hand failure");
     }
 
     public int getCardCount() {
