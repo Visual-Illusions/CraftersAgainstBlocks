@@ -46,7 +46,7 @@ public class CanaryAgainstBlocks extends VisualIllusionsCanaryPlugin implements 
         makeConfiguration();
         Table.setModReference(this);
         super.enable();
-        scoreBoard = new CABScoreboard();
+        scoreBoard = new CABScoreboard(this);
         CABListener CABListener = new CABListener(this);
         registerListener(CABListener);
         try {

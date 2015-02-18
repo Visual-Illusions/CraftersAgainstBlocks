@@ -51,4 +51,8 @@ public abstract class Deck<E extends Card> {
     }
 
     public abstract E dealCard();
+
+    public final boolean isEmpty() {
+        return cards.isEmpty();
+    }
 }

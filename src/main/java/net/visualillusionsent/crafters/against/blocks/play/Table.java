@@ -44,9 +44,10 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 /**
@@ -59,7 +60,7 @@ public final class Table {
     public static final String CAB = ChatFormat.GRAY.concat("[") + ChatFormat.WHITE.concat("CAB") + ChatFormat.GRAY.concat("]") + ChatFormat.RESET.concat(" ");
     private static final BlackCardDeck bcd = new BlackCardDeck();
     private static final WhiteCardDeck wcd = new WhiteCardDeck();
-    private static final Map<ModMessageReceiver, HumanUser> players = Maps.newHashMap();
+    private static final HashMap<ModMessageReceiver, HumanUser> players = Maps.newHashMap();
     // private static final XMLOutputter xmlSerializer = new XMLOutputter(Format.getPrettyFormat().setExpandEmptyElements(false).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator("\n"));
     private static SAXBuilder fileBuilder = new SAXBuilder();
 
@@ -108,6 +109,9 @@ public final class Table {
 
     public static void addUser(ModMessageReceiver receiver) {
         players.put(receiver, new HumanUser(receiver));
+        if (inProgress == null || !inProgress.roundStarted()) {
+            startRound();
+        }
     }
 
     public static HumanUser getUser(ModMessageReceiver receiver) {
@@ -150,7 +154,7 @@ public final class Table {
     }
 
     private static HumanUser getCzar() {
-        if (inProgress.roundStarted() && !inProgress.roundEnded()) {
+        if (inProgress != null && inProgress.roundStarted() && !inProgress.roundEnded()) {
             throw new IllegalStateException("Getting the Card Czar during a round is progress is outside manipulations.");
         }
         return new ArrayList<HumanUser>(players.values()).get(czarindex++);
@@ -165,15 +169,18 @@ public final class Table {
     }
 
     public static void startRound() {
-        if (players.size() > 3 && (inProgress == null || inProgress.roundEnded())) {
+        if (players.size() > 2 && (inProgress == null || inProgress.roundEnded())) {
             inProgress = new Round(Lists.newArrayList(players.values()), getCzar());
+        }
+        else {
+            informPlayers("Waiting on more players before round can begin");
         }
     }
 
     public static boolean loadCards(String setDirectory) {
         File base = new File(setDirectory);
-        File[] sets = base.listFiles();
-        if (sets == null) {
+        File[] sets = base.listFiles(new CardSetFilter());
+        if (sets == null || sets.length == 0) {
             if (!new File(base, "baseset").mkdirs()) {
                 modInstance.getPluginLogger().log(Level.SEVERE, "Unable to create card set directories, Plugin unable to run.");
                 return false;
@@ -195,10 +202,6 @@ public final class Table {
         }
 
         for (File cardsets : sets) {
-            if (!cardsets.isDirectory()) {
-                // Doesn't Matter
-                continue;
-            }
             File whiteCards = new File(cardsets, "whitecards.xml");
             File blackCards = new File(cardsets, "blackcards.xml");
             if (!whiteCards.exists() || !blackCards.exists()) {
@@ -221,7 +224,7 @@ public final class Table {
                         modInstance.getPluginLogger().log(Level.WARNING, "A white card in the \"" + cardsets.getName() + "\" Card Set is corrupted (invalid/missing value text), skipping loading...");
                         continue;
                     }
-                    Table.loadWhiteCard(new WhiteCard(cardsets.getName(), text));
+                    loadWhiteCard(new WhiteCard(cardsets.getName(), text));
                 }
 
                 Document black = fileBuilder.build(blackCards);
@@ -232,6 +235,7 @@ public final class Table {
                     }
                     if (!BooleanUtils.parseBoolean(card.getChild("enabled").getValue())) {
                         // Card disabled
+                        modInstance.getPluginLogger().log(Level.WARNING, "Card is disabled");
                         continue;
                     }
                     String text = card.getChildText("value");
@@ -250,7 +254,7 @@ public final class Table {
                             continue;
                         }
                     }
-                    Table.loadBlackCard(new BlackCard(cardsets.getName(), card.getChildText("value"), pick, draw));
+                    loadBlackCard(new BlackCard(cardsets.getName(), card.getChildText("value"), pick, draw));
                 }
             }
             catch (JDOMException e) {
@@ -262,9 +266,25 @@ public final class Table {
                 return false;
             }
         }
+        if (wcd.isEmpty()) {
+            modInstance.getPluginLogger().log(Level.SEVERE, "No White Cards were loaded! Cannot continue!");
+            return false;
+        }
+        else if (bcd.isEmpty()) {
+            modInstance.getPluginLogger().log(Level.SEVERE, "No Black Cards were loaded! Cannot continue!");
+            return false;
+        }
 
         bcd.shuffle();
         wcd.shuffle();
         return true;
+    }
+
+    private static final class CardSetFilter implements FileFilter {
+
+        @Override
+        public boolean accept(File file) {
+            return file.isDirectory();
+        }
     }
 }

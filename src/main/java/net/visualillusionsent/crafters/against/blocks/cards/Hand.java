@@ -108,7 +108,7 @@ public final class Hand {
 
     public void show(HumanUser humanUser) {
         for (int position = 0; position < hand.size(); position++) {
-            humanUser.inform(String.format("#%d: %s", position + 1, hand.get(position)));
+            humanUser.inform(String.format("#%d: %s", position + 1, hand.get(position).getText()));
         }
     }
 }

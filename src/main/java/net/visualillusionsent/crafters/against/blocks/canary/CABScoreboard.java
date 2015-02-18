@@ -29,8 +29,6 @@ import net.canarymod.api.scoreboard.Score;
 import net.canarymod.api.scoreboard.ScoreObjective;
 import net.canarymod.api.scoreboard.ScorePosition;
 import net.canarymod.api.scoreboard.Scoreboard;
-import net.visualillusionsent.crafters.against.blocks.play.Table;
-import net.visualillusionsent.minecraft.plugin.canary.CanaryMessageReceiver;
 
 import java.util.ArrayList;
 
@@ -44,25 +42,24 @@ public final class CABScoreboard {
     private final Scoreboard scoreboard;
     private final ScoreObjective objective;
 
-    public CABScoreboard() {
+    public CABScoreboard(CanaryAgainstBlocks cab) {
         scoreboard = Canary.scoreboards().getScoreboard("CraftersAgainstHumanity");
         objective = scoreboard.addScoreObjective("AwesomePoints");
         objective.setDisplayName("Awesome Points");
 
-        //TODO: Configuration for Rando Cardrissian
-        scoreboard.getScore("Rando Cardrissian", objective).setScore(0);
+        if (cab.randoCardrissian()) {
+            scoreboard.getScore("Rando Cardrissian", objective).setScore(0);
+        }
     }
 
     public void addUser(Player player) {
         scoreboard.getScore(player, objective).setScore(0);
         objective.setScoreboardPosition(ScorePosition.SIDEBAR, player);
-        Table.addUser(new CanaryMessageReceiver(player));
     }
 
     public void removeUser(Player player) {
         scoreboard.removeScore(player.getName(), objective);
         scoreboard.clearScoreboardPosition(ScorePosition.SIDEBAR, player);
-        Table.removeUser(new CanaryMessageReceiver(player));
     }
 
     public void awardPointTo(Player player) {

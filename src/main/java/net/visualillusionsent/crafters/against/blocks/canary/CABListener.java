@@ -104,7 +104,7 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
     )
     public void partGame(MessageReceiver receiver, String[] args) {
         if (receiver.getReceiverType().equals(ReceiverType.PLAYER)) {
-            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver.asPlayer());
+            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver);
             if (isPlaying(mrec)) {
                 getPlugin().scoreBoard.removeUser(receiver.asPlayer());
                 removeUser(mrec);
@@ -122,9 +122,12 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
     )
     public void showHand(MessageReceiver receiver, String[] args) {
         if (receiver.getReceiverType().equals(ReceiverType.PLAYER)) {
-            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver.asPlayer());
+            ModMessageReceiver mrec = new CanaryMessageReceiver(receiver);
             if (isPlaying(mrec)) {
                 Table.getUser(mrec).showHand();
+            }
+            else {
+                receiver.notice("You aren't part of the current game. Use /cab join to play.");
             }
         }
     }
