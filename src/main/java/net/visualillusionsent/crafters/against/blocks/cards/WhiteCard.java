@@ -33,4 +33,8 @@ public final class WhiteCard extends Card {
     public WhiteCard(String pack, String text) {
         super(pack, text);
     }
+
+    public final String toString(){
+        return String.format("%s [%s]", text, pack);
+    }
 }

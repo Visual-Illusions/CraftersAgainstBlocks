@@ -41,4 +41,8 @@ public interface User {
     public void inform(String msg);
 
     public void showHand();
+
+    String name();
+
+    int getHandSize();
 }

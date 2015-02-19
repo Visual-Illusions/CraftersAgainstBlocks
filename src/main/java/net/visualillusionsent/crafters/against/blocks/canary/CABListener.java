@@ -87,7 +87,6 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
             if (!isPlaying(mrec)) {
                 getPlugin().scoreBoard.addUser(receiver.asPlayer());
                 addUser(mrec);
-                receiver.notice("You have joined a game of Crafters Against Blocks.");
             }
             else {
                 receiver.notice("You are already playing.");
@@ -111,7 +110,6 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
             if (isPlaying(mrec)) {
                 getPlugin().scoreBoard.removeUser(receiver.asPlayer());
                 removeUser(mrec);
-                receiver.notice("You have left a game of Crafters Against Blocks.");
             }
         }
     }
@@ -170,12 +168,12 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
                 int selection;
                 try {
                     selection = Integer.parseInt(args[0]);
-                    if (selection > 10 || selection < 1) {
+                    if (selection > user.getHandSize() || selection < 1) {
                         throw new NumberFormatException();
                     }
                 }
                 catch (NumberFormatException nfex) {
-                    receiver.notice("Invalid selection. Please enter a whole number (1 - 10)");
+                    receiver.notice("Invalid selection. Please enter a whole number between 1 and "+user.getHandSize());
                     return;
                 }
 
@@ -187,17 +185,19 @@ public final class CABListener extends VisualIllusionsCanaryPluginInformationCom
                             return;
                         }
                         pendingSelection.put(receiver, selection);
-                        receiver.notice("Please make another selection.");
-                    }
-                    else {
-                        WhiteCard[] cards = new WhiteCard[count];
-                        Integer[] selections = pendingSelection.get(receiver).toArray(new Integer[count]);
-                        for (int index = 0; index < count; index++) {
-                            cards[index] = user.playCard(selections[index]);
+                        if (pendingSelection.get(receiver).size() < count) {
+                            receiver.notice("Please make another selection.");
+                            return;
                         }
-                        round.addPlay(user, cards);
-                        pendingSelection.removeAll(receiver);
                     }
+                    //Process play
+                    WhiteCard[] cards = new WhiteCard[count];
+                    Integer[] selections = pendingSelection.get(receiver).toArray(new Integer[count]);
+                    for (int index = 0; index < count; index++) {
+                        cards[index] = user.playCard(selections[index]);
+                    }
+                    round.addPlay(user, cards);
+                    pendingSelection.removeAll(receiver);
                 }
                 else {
                     round.addPlay(user, user.playCard(--selection));

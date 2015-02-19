@@ -107,8 +107,9 @@ public final class Hand {
     }
 
     public void show(HumanUser humanUser) {
+        humanUser.inform(Table.CAB.concat("Your White Cards"));
         for (int position = 0; position < hand.size(); position++) {
-            humanUser.inform(String.format("#%d: %s", position + 1, hand.get(position).getText()));
+            humanUser.inform(String.format(Table.CAB.concat(Table.WHITE), position + 1, hand.get(position)));
         }
     }
 }

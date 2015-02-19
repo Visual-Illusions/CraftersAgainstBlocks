@@ -64,10 +64,6 @@ public class CanaryAgainstBlocks extends VisualIllusionsCanaryPlugin implements 
         }
     }
 
-    public void addUserToBoard(Player player) {
-        scoreBoard.addUser(player);
-    }
-
     @Override
     public void awardPointTo(User winner) {
         if (winner instanceof RandoCardrissian) {

@@ -79,6 +79,16 @@ public class HumanUser implements User {
         hand.show(this);
     }
 
+    @Override
+    public String name() {
+        return receiver.getName();
+    }
+
+    @Override
+    public int getHandSize() {
+        return hand.getCardCount();
+    }
+
     public ModMessageReceiver getReceiver() {
         return receiver;
     }

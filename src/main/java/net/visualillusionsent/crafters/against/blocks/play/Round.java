@@ -25,6 +25,7 @@ package net.visualillusionsent.crafters.against.blocks.play;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
+import net.canarymod.chat.ChatFormat;
 import net.visualillusionsent.crafters.against.blocks.cards.BlackCard;
 import net.visualillusionsent.crafters.against.blocks.cards.WhiteCard;
 import net.visualillusionsent.crafters.against.blocks.user.HumanUser;
@@ -79,11 +80,11 @@ public final class Round {
             // Only time this should happen is with the Draw 2, Pick 3
             allPlayersDraw(cardCzar, inplay.getDraw());
         }
-
-        informPlayers(inplay);
         informPlayers("Use /cab showhand to see the cards you have.");
         informPlayers("Use /cab select # to play white cards.");
-        cardCzar.inform("You are the Card Czar this round");
+
+        informPlayers(inplay);
+        cardCzar.inform(ChatFormat.RED + "You are the Card Czar this round");
 
         RandoCardrissian rando = getRandoCardrissian();
         if (rando != null) {
@@ -120,17 +121,14 @@ public final class Round {
     }
 
     private void showCards() {
-
+        int count = 1;
         for (WhiteCard[] cards : played.values()) {
-            int count = 1;
+
             String text = "";
             for (WhiteCard card : cards) {
                 text += "\"" + card.getText() + "\" ";
             }
-            cardCzar.inform(String.format("#%d: %s", count, text));
-            for (HumanUser humanUser : players) {
-                humanUser.inform(String.format("#%d: %s", count++, text));
-            }
+            informPlayers(String.format(Table.WHITE, count++, text));
         }
         state = State.CZARSELECTION;
     }
@@ -149,6 +147,7 @@ public final class Round {
             informPlayers(win.getText());
         }
         User winner = played.inverse().get(selection);
+        informPlayers("The Winner is: "+winner.name());
         Table.awardPointTo(winner);
         players.clear();
         played.clear();

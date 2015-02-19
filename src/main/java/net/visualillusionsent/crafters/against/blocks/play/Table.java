@@ -57,7 +57,12 @@ import java.util.logging.Level;
  * @author Jason Jones (darkdiplomat)
  */
 public final class Table {
-    public static final String CAB = ChatFormat.GRAY.concat("[") + ChatFormat.WHITE.concat("CAB") + ChatFormat.GRAY.concat("]") + ChatFormat.RESET.concat(" ");
+    public static final String CAB = ChatFormat.DARK_GRAY.concat("[") + ChatFormat.GRAY.concat("CAB") + ChatFormat.DARK_GRAY.concat("]") + ChatFormat.RESET.concat(" ");
+    public static final String WHITE = ChatFormat.GRAY + " #%d: "+ ChatFormat.RESET + "%s";
+    public static final String BLACK = ChatFormat.BOLD.concat(ChatFormat.AQUA).concat("%s");
+    public static final String JOIN = ChatFormat.GRAY + "%s has joined the game";
+    public static final String PART = ChatFormat.GRAY + "%s has left the game";
+
     private static final BlackCardDeck bcd = new BlackCardDeck();
     private static final WhiteCardDeck wcd = new WhiteCardDeck();
     private static final HashMap<ModMessageReceiver, HumanUser> players = Maps.newHashMap();
@@ -101,6 +106,7 @@ public final class Table {
     }
 
     public static void removeUser(ModMessageReceiver receiver) {
+        Table.informPlayers(String.format(Table.PART, receiver.getName()));
         players.remove(receiver);
         if (inProgress.roundStarted() && !inProgress.roundEnded()) {
             inProgress.remove(players.get(receiver));
@@ -109,6 +115,7 @@ public final class Table {
 
     public static void addUser(ModMessageReceiver receiver) {
         players.put(receiver, new HumanUser(receiver));
+        Table.informPlayers(String.format(Table.JOIN, receiver.getName()));
         if (inProgress == null || !inProgress.roundStarted()) {
             startRound();
         }
@@ -139,7 +146,7 @@ public final class Table {
 
     public static void informPlayers(BlackCard inplay) {
         for (HumanUser humanUser : players.values()) {
-            humanUser.inform(CAB.concat(inplay.toString()));
+            humanUser.inform(String.format(CAB.concat(BLACK), inplay.toString()));
         }
     }
 

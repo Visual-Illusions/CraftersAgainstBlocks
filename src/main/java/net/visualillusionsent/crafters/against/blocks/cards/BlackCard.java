@@ -46,6 +46,6 @@ public final class BlackCard extends Card {
     }
 
     public String toString() {
-        return String.format("[%s] %s (Pick %d)", pack, text, pick);
+        return String.format("%s [%s|Pick %d]", text, pack, pick);
     }
 }
